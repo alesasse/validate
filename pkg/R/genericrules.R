@@ -658,13 +658,15 @@ number_format <- function(x, format=NULL, min_dig=NULL, max_dig=NULL, dec="."){
     rx <- gsub(".*", "\\d*",   rx, fixed=TRUE)
     return( grepl(rx, as.character(x)) )
   }
-  rx <- if (dec == ".") "^.*\\." else sprintf("^.*\\%s",dec)
-  decimal_digits <- sub(rx, "", x)
-  min_dig <- if (is.null(min_dig)) "0" else as.character(min_dig)
-  max_dig <- if (is.null(max_dig)) ""  else as.character(max_dig)
-  rx <- sprintf("^\\d{%s,%s}$",min_dig,max_dig)
-  grepl(rx,decimal_digits)
-  
+  rx <- if (dec == ".") "\\." else sprintf("\\%s", dec)
+  decimal_digits <- unlist(strsplit(as.character(x), rx))[2]
+  n_decimal <- if(is.na(decimal_digits)) 0 else nchar(decimal_digits)
+  min_dig <- if (is.null(min_dig)) 0 else min_dig
+  max_dig <- if (is.null(max_dig)) 8  else max_dig
+  if (n_decimal >= min_dig & n_decimal <= max_dig) {
+    return(TRUE)
+  }
+  FALSE
 }
 
 

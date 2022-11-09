@@ -194,6 +194,8 @@ expect_false(number_format("12.34",max_dig=1))
 expect_true(number_format("12.34",min_dig=1,max_dig=2))
 expect_false(number_format("12.34",min_dig=3,max_dig=5))
 expect_true(number_format("12,34",min_dig=1,max_dig=2, dec=","))
+expect_true(number_format(122.0, max_dig=2))
+expect_true(number_format(122, max_dig=2))
 
 
 ## Checking data against a fixed set of key-combinations
